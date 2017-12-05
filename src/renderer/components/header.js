@@ -28,6 +28,9 @@ class Header extends React.Component {
         <div className='nav right float-right'>
           {this.getAddButton()}
         </div>
+        <div className="nav searchbox">
+          <input type="text" className="searchbox" />
+        </div>
       </div>
     )
   }
