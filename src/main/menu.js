@@ -167,6 +167,13 @@ function getMenuTemplate () {
           type: 'separator'
         },
         {
+          label: 'Torrent Search',
+          click: () => windows.main.dispatch('searchScreen')
+        },
+        {
+          type: 'separator'
+        },
+        {
           label: 'Go Back',
           accelerator: 'Esc',
           click: () => windows.main.dispatch('escapeBack')
