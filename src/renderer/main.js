@@ -97,6 +97,10 @@ function onState (err, _state) {
       const PrefsController = require('./controllers/prefs-controller')
       return new PrefsController(state, config)
     }),
+    searchScreen: createGetter(() => {
+      const SearchController = require('./controllers/search-controller')
+      return new SearchController(state, config)
+    }),
     subtitles: createGetter(() => {
       const SubtitlesController = require('./controllers/subtitles-controller')
       return new SubtitlesController(state)
@@ -302,6 +306,10 @@ const dispatchHandlers = {
   'checkDownloadPath': checkDownloadPath,
   'startFolderWatcher': () => controllers.folderWatcher().start(),
   'stopFolderWatcher': () => controllers.folderWatcher().stop(),
+
+  // Search screen
+  'searchScreen': () => controllers.searchScreen().show(),
+  'search': () => controllers.searchScreen().search(),
 
   // Update (check for new versions on Linux, where there's no auto updater)
   'updateAvailable': (version) => controllers.update().updateAvailable(version),
