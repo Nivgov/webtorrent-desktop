@@ -99,7 +99,7 @@ function onState (err, _state) {
     }),
     searchScreen: createGetter(() => {
       const SearchController = require('./controllers/search-controller')
-      return new SearchController(state, config)
+      return new SearchController(state)
     }),
     subtitles: createGetter(() => {
       const SubtitlesController = require('./controllers/subtitles-controller')
@@ -309,7 +309,8 @@ const dispatchHandlers = {
 
   // Search screen
   'searchScreen': () => controllers.searchScreen().show(),
-  'search': () => controllers.searchScreen().search(),
+  'search': (query) => controllers.searchScreen().search(query),
+  'addTorrentResult': (torrent) => controllers.searchScreen().addResult(torrent),
 
   // Update (check for new versions on Linux, where there's no auto updater)
   'updateAvailable': (version) => controllers.update().updateAvailable(version),

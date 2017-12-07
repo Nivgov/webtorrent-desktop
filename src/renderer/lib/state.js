@@ -123,6 +123,8 @@ function setupStateSaved (cb) {
       externalPlayerPath: null,
       startup: false,
       autoAddTorrents: false,
+      torrentProvider: '1337x',
+      torrentMaxResults: 20,
       torrentsFolderPath: ''
     },
     torrents: config.DEFAULT_TORRENTS.map(createTorrentObject),

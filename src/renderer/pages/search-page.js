@@ -1,33 +1,17 @@
 const React = require('react')
-const prettyBytes = require('prettier-bytes')
+// const prettyBytes = require('prettier-bytes')
 
-const Checkbox = require('material-ui/Checkbox').default
-const LinearProgress = require('material-ui/LinearProgress').default
+// const Checkbox = require('material-ui/Checkbox').default
+// const LinearProgress = require('material-ui/LinearProgress').default
 
 // const TorrentSummary = require('../lib/torrent-summary')
 // const TorrentPlayer = require('../lib/torrent-player')
 const {dispatch} = require('../lib/dispatcher')
 
 module.exports = class SearchPage extends React.Component {
-  render() {
-    return (
-      <div>
-        <div className="searchbox">
-          <input type="text" placeholder="Search Torrents..." onKeyDown={this.handleSearch}/>
-          <i className="material-icons">search</i>
-        </div>
-        {this.getSearchResults()}
-      </div>
-    )
-    const state = this.props.state
-  }
 
-  handleSearch (event) {
-    if(event.keyCode == 13){
-      dispatch('search')
-      event.preventDefault()
-      event.stopPropagation()
-    }
+  constructor(props) {
+    super(props)
   }
 
   getSearchResults() {
@@ -40,7 +24,7 @@ module.exports = class SearchPage extends React.Component {
     }
 
     const searchResults = state.searchResults.map(
-      (searchResult) => this.renderResult(searchResult)
+      (searchResult, index) => this.renderResult(searchResult, index)
     )
 
     if(searchResults.length) {
@@ -51,15 +35,13 @@ module.exports = class SearchPage extends React.Component {
       )
     }
     return (
-      <div key='result-list' className='result-list'>
-        <div className='no-results'>
-          No Results!
-        </div>
+      <div className='no-results'>
+        No Results!
       </div>
     )
   }
 
-  renderResult (searchResult) {
+  renderResult (searchResult, index) {
     // const state = this.props.state
     // const infoHash = torrentSummary.infoHash
     // const isSelected = infoHash && state.selectedInfoHash === infoHash
@@ -83,6 +65,7 @@ module.exports = class SearchPage extends React.Component {
         // id={torrentSummary.testID && ('torrent-' + torrentSummary.testID)}
         // key={torrentSummary.torrentKey}
         // style={style}
+        onClick={(e)=>this.handleClick(searchResult)}
         className={classes.join(' ')}
         // onContextMenu={infoHash && dispatcher('openTorrentContextMenu', infoHash)}
         /*onClick={infoHash && dispatcher('toggleSelectTorrent', infoHash)}*/>
@@ -90,26 +73,42 @@ module.exports = class SearchPage extends React.Component {
         {/* {infoHash ? this.renderTorrentButtons(torrentSummary) : null} */}
         {/* {isSelected ? this.renderTorrentDetails(torrentSummary) : null} */}
         <div key='title' className='title'>{searchResult.title}</div>
+        <div key='seeds' className='seeds'>
+          Seeds: {searchResult.seeds}
+        </div>
+        <div key='peers' className='peers'>
+          Peers: {searchResult.peers}
+        </div>
+        <div key='size' className='size'>
+          Size: {searchResult.size}
+        </div>
         <hr />
       </div>
     )
   }
-}
 
-function stopPropagation(e) {
-  e.stopPropagation()
-}
-
-function getErrorMessage(torrentSummary) {
-  const err = torrentSummary.error
-  if (err === 'path-missing') {
+  render() {
     return (
-      <span>
-        Path missing.
-            < br />
-        Fix and restart the app, or delete the torrent.
-          </span>
+      <div>
+        <div className="searchbox">
+          <input type="text" placeholder="Search Torrents..." onKeyDown={this.handleSearch}/>
+          <i className="material-icons">search</i>
+        </div>
+        {this.getSearchResults()}
+      </div>
     )
   }
-  return 'Error'
+
+  handleSearch (event) {
+    if(event.keyCode == 13){
+      dispatch('search', event.target.value)
+      event.preventDefault()
+      event.stopPropagation()
+    }
+  }
+
+  // when the user clicks something inside the result-list
+  handleClick (result) {
+    dispatch('addTorrentResult', result)
+  }
 }
