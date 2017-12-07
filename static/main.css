@@ -955,6 +955,10 @@ video::-webkit-media-text-track-container {
   background-color: #333334;
   padding: 5px;
   display: flex;
+
+  position: fixed;
+  top: 38px;
+  border-bottom: 1px solid black;
 }
 
 .searchbox>input[type="text"] {
@@ -981,4 +985,36 @@ video::-webkit-media-text-track-container {
   font-family: "Material Icons";
   font-weight: 400;
   font-style: normal;
+}
+
+.result-list {
+  margin-top: 36px;
+}
+
+.search-result {
+  float: left;
+  width: 100%;
+  padding: 0px 15px 5px 10px;
+  background: #37474F;
+  border-bottom: 1px solid black;
+}
+
+.search-result>.title {
+  color: #BDBDBD;
+}
+
+.search-result>.seeds {
+  float: right;
+  color: #4CAF50;
+  margin-right: 20px;
+}
+
+.search-result>.peers {
+  float: right;
+  color: #FFC107;  
+}
+
+.search-result>.size {
+  float: left;
+  color: #E0E0E0;
 }
