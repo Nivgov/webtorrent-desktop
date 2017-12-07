@@ -3,6 +3,9 @@ const React = require('react')
 
 const colors = require('material-ui/styles/colors')
 const Checkbox = require('material-ui/Checkbox').default
+const SelectField = require('material-ui/SelectField').default
+const MenuItem = require('material-ui/MenuItem').default
+const TextField = require('material-ui/TextField').default
 const RaisedButton = require('material-ui/RaisedButton').default
 const Heading = require('../components/heading')
 const PathSelector = require('../components/path-selector')
@@ -208,6 +211,56 @@ class PreferencesPage extends React.Component {
     dispatch('updatePreferences', 'isFileHandler', true)
   }
 
+  selectTorrentProvider() {
+    return (
+      <Preference>
+        <SelectField
+          style={{float: 'left', 'margin-right': '10px'}}
+          floatingLabelText='Select Provider'
+          value={this.props.state.unsaved.prefs.torrentProvider}
+          onChange={this.handleTorrentProviderChange}
+        >
+          <MenuItem value='1337x' primaryText='1337x' />
+          <MenuItem value='Torrent9' primaryText='Torrent9' />
+          <MenuItem value='Torrentz2' primaryText='Torrentz2' />
+          <MenuItem value='ThePirateBay' primaryText='ThePirateBay' />
+          <MenuItem value='KickassTorrents' primaryText='KickassTorrents' />
+          <MenuItem value='Rarbg' primaryText='Rarbg' />
+          <MenuItem value='TorrentProject' primaryText='TorrentProject' />
+          <MenuItem value='ExtraTorrent' primaryText='ExtraTorrent' />
+        </SelectField>
+        {this.torrentMaxResults()}
+      </Preference>
+    )
+  }
+
+  torrentMaxResults() {
+    return (
+        <TextField
+          floatingLabelText="Max Results"
+          value={this.props.state.unsaved.prefs.torrentMaxResults}
+          onChange={this.handleTorrentMaxResultsChange}
+          type='number'
+          min='1'
+          onBlur={this.validateTorrentMaxResults.bind(this)}
+          />
+    )
+  }
+
+  handleTorrentMaxResultsChange(event) {
+    dispatch('updatePreferences', 'torrentMaxResults', event.target.value)
+  }
+
+  validateTorrentMaxResults(event) {
+    const value = event.target.value
+    if(value == '' || value < 1 || value % 1 !== 0) // TODO: add if value is not an integer
+      dispatch('updatePreferences', 'torrentMaxResults', this.props.state.saved.prefs.torrentMaxResults || 20)
+  }
+
+  handleTorrentProviderChange(event, index, value) {
+    dispatch('updatePreferences', 'torrentProvider', value)
+  }
+
   render () {
     const style = {
       color: colors.grey400,
@@ -225,6 +278,9 @@ class PreferencesPage extends React.Component {
           {this.openExternalPlayerCheckbox()}
           {this.externalPlayerPathSelector()}
           {this.highestPlaybackPriorityCheckbox()}
+        </PreferencesSection>
+        <PreferencesSection title='Torrent search'>
+          {this.selectTorrentProvider()}
         </PreferencesSection>
         <PreferencesSection title='Default torrent app'>
           {this.setDefaultAppButton()}
