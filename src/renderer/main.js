@@ -101,6 +101,10 @@ function onState (err, _state) {
       const SearchController = require('./controllers/search-controller')
       return new SearchController(state)
     }),
+    search: createGetter(() => {
+      const Search = require('./controllers/torrent-search-controller')
+      return new Search(state)
+    }),
     subtitles: createGetter(() => {
       const SubtitlesController = require('./controllers/subtitles-controller')
       return new SubtitlesController(state)
@@ -308,9 +312,9 @@ const dispatchHandlers = {
   'stopFolderWatcher': () => controllers.folderWatcher().stop(),
 
   // Search screen
-  'searchScreen': () => controllers.searchScreen().show(),
-  'search': (query) => controllers.searchScreen().search(query),
-  'addTorrentResult': (torrent) => controllers.searchScreen().addResult(torrent),
+  'searchScreen': () => {console.time('search'); controllers.searchScreen().show()},
+  'search': (query) => controllers.search().search(query),
+  'addTorrentResult': (torrent) => controllers.search().addResult(torrent),
 
   // Update (check for new versions on Linux, where there's no auto updater)
   'updateAvailable': (version) => controllers.update().updateAvailable(version),

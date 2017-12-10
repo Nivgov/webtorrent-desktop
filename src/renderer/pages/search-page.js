@@ -1,12 +1,4 @@
 const React = require('react')
-// const colors = require('material-ui/styles/colors')
-// const prettyBytes = require('prettier-bytes')
-
-// const Checkbox = require('material-ui/Checkbox').default
-// const LinearProgress = require('material-ui/LinearProgress').default
-
-// const TorrentSummary = require('../lib/torrent-summary')
-// const TorrentPlayer = require('../lib/torrent-player')
 const {dispatch} = require('../lib/dispatcher')
 
 module.exports = class SearchPage extends React.Component {
